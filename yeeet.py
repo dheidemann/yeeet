@@ -31,7 +31,7 @@ class Logger(object):
 
 def my_hook(d):
     if d['status'] == 'finished':
-        print(d['filename'][:-5] + ' done. \nconverting ...')
+        print(d['filename'].split('.', 2)[0] + ' done. \nconverting ...')
 
 
 ydl_opts = {
@@ -49,9 +49,13 @@ ydl_opts = {
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
     ydl.download(queue)
 
+files = []
 for filename in os.listdir('.'):
     if "mp3" in filename or "m4a" in filename:
-        print(filename)
-        meta = Metadata(filename)
-        meta.fetch()
-        meta.apply()
+        files.append(filename)
+
+for file in files:
+    print(file)
+    meta = Metadata(file)
+    meta.fetch()
+    meta.apply()
