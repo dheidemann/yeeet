@@ -1,11 +1,11 @@
 import os
 import spotipy
-from PyLyrics import *
 import urllib.request
 import sys
 import eyed3
 from spotipy.oauth2 import SpotifyClientCredentials
 import discogs_client
+import lyricsgenius
 
 from credentials import *
 
@@ -30,6 +30,7 @@ class Metadata:
             'yeeet/1.0',
             user_token = DISCOGS_PAT
         )
+        genius = lyricsgenius.Genius(GENIUS_AT)
 
         sp = spotipy.Spotify(client_credentials_manager = spotify_credentials)
         text_file = open('Blacklist.txt', 'r')
@@ -83,10 +84,12 @@ class Metadata:
                 self.album_art_filename = '';
                 pass
 
+        print('\nfetch lyrics ...')
         try:
-            self.lyrics = PyLyrics.getLyrics(self.artist, self.title, features="lxml");
+            song = genius.search_song(self.title, self.artist)
+            self.lyrics = song.lyrics
         except:
-            sys.stderr.write('Cant find ' + self.filename + ' on lyrics.wikia.com\n')
+            sys.stderr.write('Cant find ' + self.filename + ' on genius\n')
             self.lyrics = '';
             pass
         
@@ -111,8 +114,8 @@ class Metadata:
                 if self.album_art_filename != '':
                     imagedata = open(self.cover_art_filename,"rb").read()
                     tag.images.set(3,imagedata,"image/jpeg")
-                if lyrics is not None:
-                    tag.lyrics.set(lyrics);
+                if self.lyrics is not None:
+                    tag.lyrics.set(self.lyrics);
             except:
                 pass;
             tag.save();

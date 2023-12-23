@@ -1,13 +1,24 @@
 from __future__ import unicode_literals
-import youtube_dl
+import yt_dlp
 from pyfiglet import Figlet
 from metadata import Metadata
 import os
+import sys
+
+queue = []
+
+if __name__ == "__main__":
+    for i in range(1, len(sys.argv)):
+        queue.append(sys.argv[i])
 
 print(Figlet(font='slant').renderText('yeeet'))
 
-queue = []
+def print_queue(q):
+    for i in range(len(q)):
+        print(str(i) + '. url: ' + q[i])
+
 print('[c: cancel | f: finish | r <index>: remove url]')
+print_queue(queue)
 while True:
     url = input(str(len(queue)) + '. url: ')
     if url == 'c':
@@ -17,7 +28,7 @@ while True:
     elif url[0] == 'r':
         queue.pop(int(url[1:]))
         print('\ncurrent list:')
-        for i in range(len(queue)): print(str(i) + '. url: ' + queue[i])
+        print_queue(queue)
     else: queue.append(url)
 
 class Logger(object):
@@ -31,7 +42,7 @@ class Logger(object):
 
 def my_hook(d):
     if d['status'] == 'finished':
-        print(d['filename'].split('.', 2)[0] + ' done. \nconverting ...')
+        print(d['filename'].split('.', 2)[0] + ' done. \nconverting . . .')
 
 
 ydl_opts = {
@@ -46,7 +57,7 @@ ydl_opts = {
     'outtmpl': '%(title)s.%(ext)s',
 }
 
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+with yt_dlp.YoutubeDL(ydl_opts) as ydl:
     ydl.download(queue)
 
 files = []
@@ -59,3 +70,4 @@ for file in files:
     meta = Metadata(file)
     meta.fetch()
     meta.apply()
+import sys
