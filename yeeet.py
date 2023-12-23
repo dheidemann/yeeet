@@ -42,7 +42,7 @@ class Logger(object):
 
 def my_hook(d):
     if d['status'] == 'finished':
-        print(d['filename'].split('.', 2)[0] + ' done. \nconverting . . .')
+        print(d['filename'].split('.', 2)[0] + ' done. \nconverting ...')
 
 
 ydl_opts = {
