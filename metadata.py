@@ -62,9 +62,9 @@ class Metadata:
                     num += 1
 
             selected = input('choose result [m: manual input, default: 0]: ')
-            if selected == '': selected = 0
-            elif selected == 'm': self.manual_input()
+            if selected == 'm': self.manual_input()
             else: 
+                if selected == '': selected = 0
                 selected = int(selected)
                 if selected < len(spotify_res['tracks']['items']):
                     self.title = spotify_res['tracks']['items'][selected]['name']

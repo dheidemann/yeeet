@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 import yt_dlp
-from pyfiglet import Figlet
 from metadata import Metadata
 import os
 import sys
@@ -11,7 +10,14 @@ if __name__ == "__main__":
     for i in range(1, len(sys.argv)):
         queue.append(sys.argv[i])
 
-print(Figlet(font='slant').renderText('yeeet'))
+print("""
+                         __
+   __  _____  ___  ___  / /_
+  / / / / _ \/ _ \/ _ \/ __/
+ / /_/ /  __/  __/  __/ /_
+ \__, /\___/\___/\___/\__/
+/____/
+      """)
 
 def print_queue(q):
     for i in range(len(q)):
